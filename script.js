@@ -7,8 +7,9 @@ var controls = {}
 controls.tracks = [];
 controls.globals = [];
 
-var LO = 7;
-var HI = 11;
+var TT = 4;
+var LO = 8;
+var HI = 12;
 
 var page = 0;
 //0 = start
@@ -475,11 +476,39 @@ var Track = function(n) {
 	this.m = new Toggle(0, [1, n], [0, HI], function() { return page == 0; });
 	this.pat = new Pattern(0, [15, n], [0, LO, HI], function() { return 1; }, update);
 	this.rev = new Toggle(0, [2, n], [LO, HI], function() { return page == 0; });
-	this.s = new Value(3, [[3, 4, 5, 6, 7, 8], n], [[0, 0, 0, LO, 0, 0], HI], function() { return page == 0; });
-	this.s.output = function(v) { return v - 3; }
+	this.s = new Value(2, [[3, 4, 5, 6, 7], n], [[0, 0, 0, 0, 0], HI], function() { return page == 0; });
+	this.s.output = function(v) { return v - 2; }
+    this.rec_s = new Value(-1, [[0], 0], [[0], 0], function() { return page == 0; });
+	this.rec_s.output = function(v) { return v - 2; }
+    
+    var rec_s_event = function(s) {
+        return function(v) {
+            this.v = v;
+            
+            s.b[0] = [0, 0, 0, 0, 0];
+            s.b[0][this.v] = LO;
+            
+            redraw();
+            g.refresh();
+        }
+    }
+    
+    this.rec_s.event = rec_s_event(this.s);
+    
+    this.lock = new Toggle(0, [8, n], [TT, LO], function() { return page == 0; });
+    this.lock = new Toggle(0, [8, n], [TT, LO], function() { return page == 0; });
+    
+    var lock_event = function(s, rec_s) {
+        return function(v) {
+            this.v = v;
+            this.v ? rec_s.event(s.v) : rec_s.event(-1);
+        }
+    }
+    
+    this.lock.event = lock_event(this.s, this.rec_s)
 	this.b = new Value(n % 4, [[9, 10, 11, 12], n], [[0, 0, 0, 0], HI], function() { return page == 0; });
     
-    this.prst = new Momentary(0, [13, n], [LO, HI], function() { return page < 9; });
+    this.prst = new Momentary(0, [13, n], [TT, HI], function() { return page < 9; });
     this.prst.event = function(v) {
 		this.v = v;
         this.v ? page = n + 1 : locked ? page = page : page = 0;
@@ -488,18 +517,18 @@ var Track = function(n) {
         g.refresh();
     }
     
-    this.prst_states = new Value(0, [[0, 1, 2, 3, 4, 5, 6, 7], n], [[LO, LO, LO, LO, LO, LO, LO, LO], HI], function() { return page == n + 1; });
+    this.prst_states = new Value(0, [[0, 1, 2, 3, 4, 5, 6, 7], n], [[TT, TT, TT, TT, TT, TT, TT, TT], HI], function() { return page == n + 1; });
     
-    this.prst_lock = new Toggle(0, [12, n], [LO, HI], function() { return page == n + 1; });
-    this.prst_lock.event = function(v) {
-		locked = v;
-        if(!v) page = 0;
-		
-		redraw();
-        g.refresh();
-    }
+//    this.prst_lock = new Toggle(0, [12, n], [LO, HI], function() { return page == n + 1; });
+//    this.prst_lock.event = function(v) {
+//		locked = v;
+//        if(!v) page = 0;
+//		
+//		redraw();
+//        g.refresh();
+//    }
     
-    this.rout = new Momentary(0, [14, n], [LO, HI], function() { return 1; });
+    this.rout = new Momentary(0, [14, n], [TT, HI], function() { return page == 0 || page >= 9; });
     this.rout.event = function(v) {
 		this.v = v;
         this.v ? page = n + 9 : page = 0;
@@ -510,43 +539,13 @@ var Track = function(n) {
     
     this.rout_marker = new Value(-1, [[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], n], [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 1], function() { return page == n + 9; });
     
-    this.rout_inputs = new Value(0, [0, [0, 1, 2, 3]],  [[LO, LO, LO, LO], HI], function() { return page == n + 9; });
+    this.rout_inputs = new Value(0, [[0, 1, 2], n],  [[LO, LO, LO, LO], HI], function() { return page == n + 9; });
     
-    this.rout_outputs = new Value(0, [0, [5, 6, 7]],  [[LO, LO, LO], HI], function() { return page == n + 9; });
+    this.rout_outputs = new Value(0, [[11, 12, 13], n],  [[LO, LO, LO], HI], function() { return page == n + 9; });
     
-    var friend_func = function(friend) {
-        return function(v) { 
-            this.v = v;
-
-            friend.v = -1;
-            post("hi");
-            
-            redraw();
-            g.refresh();
-        }
-    }
+    this.rout_mods = new Toggles([], [[4, 5, 6, 7, 8], n], [[LO, LO, LO, LO, LO], HI], function() { return page == n + 9; });
     
-    this.route_s0_patch = new Value(0, [2, [0, 1, 2, 3]],  [[LO, LO, LO, LO], HI], function() { return page == n + 9; });
-    this.route_s1_patch = new Value(1, [5, [0, 1, 2, 3]],  [[LO, LO, LO, LO], HI], function() { return page == n + 9; });
-    this.route_s2_patch = new Value(2, [8, [0, 1, 2, 3]],  [[LO, LO, LO, LO], HI], function() { return page == n + 9; });
-    this.route_s3_patch = new Value(3, [11, [0, 1, 2, 3]],  [[LO, LO, LO, LO], HI], function() { return page == n + 9; });
-    this.route_s0_track = new Value(-1, [3, [0, 1, 2, 3, 4, 5, 6, 7]],  [[0, 0, 0, 0, 0, 0, 0, 0], HI], function() { return page == n + 9; });
-    
-    this.route_s1_track = new Value(-1, [6, [0, 1, 2, 3, 4, 5, 6, 7]],  [[0, 0, 0, 0, 0, 0, 0, 0], HI], function() { return page == n + 9; });
-    this.route_s2_track = new Value(-1, [9, [0, 1, 2, 3, 4, 5, 6, 7]],  [[0, 0, 0, 0, 0, 0, 0, 0], HI], function() { return page == n + 9; });
-    this.route_s3_track = new Value(-1, [12, [0, 1, 2, 3, 4, 5, 6, 7]],  [[0, 0, 0, 0, 0, 0, 0, 0], HI], function() { return page == n + 9; });
-    
-    this.route_s0_patch.event = friend_func(this.route_s0_track);
-    this.route_s1_patch.event = friend_func(this.route_s1_track);
-    this.route_s2_patch.event = friend_func(this.route_s2_track);
-    this.route_s3_patch.event = friend_func(this.route_s3_track);
-    
-    this.route_s0_track.event = friend_func(this.route_s0_patch);
-    this.route_s1_track.event = friend_func(this.route_s1_patch);
-    this.route_s2_track.event = friend_func(this.route_s2_patch);
-    this.route_s3_track.event = friend_func(this.route_s3_patch);
-    
-    
+    this.rout_dubs = new Toggles([], [9, [0, 1, 2, 3, 4, 5, 6, 7]], [[TT, TT, TT, TT, TT, TT, TT, TT], HI], function() { return page == n + 9; });
 }
 
 var init = function() {
