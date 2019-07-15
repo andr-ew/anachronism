@@ -267,7 +267,7 @@ function Grid() {
 	}
 	
 	this.led = function(x, y, z) {
-		this.matrix[x][y] = z;
+		if(this.matrix[x] != null && this.matrix[x][y] != null) this.matrix[x][y] = z;
 	}
 	
 	this.quad_off = [[0, 0,], [8, 0], [0, 8], [8, 8], [16, 0,], [24, 0], [16, 8], [24, 8]];

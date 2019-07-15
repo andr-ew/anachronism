@@ -384,3 +384,68 @@ var Pattern = function(v, p, b, pg, f) {
 }
 
 Pattern.prototype = Object.create(Toggle.prototype);
+
+var g = grid.connect();
+
+var update = function(h, i, j, v) {
+	if (controls[h][i][j].v != v) {
+		controls[h][i][j].event(v);
+		controls[h][i][j].v = v;
+		
+		output(h, Number(i), j, controls[h][i][j].output(controls.tracks[i][j].v));
+	}
+	
+	controls[h][i][j].draw(g);
+	
+	g.refresh();
+}
+
+g.event = function(x, y, z) {
+	for(h in controls) {
+		for(i in controls[h]) {
+            if(controls[h][i]) {
+                for(j in controls[h][i]) {
+                    if(controls[h][i] && controls[h][i][j] && controls[h][i][j].look) {
+                        if(controls[h][i][j].look(x, y, z)) {
+                            for(l in controls[h][i]) {
+                                if(!(controls[h][i][j].ispattern) && controls[h][i][l].ispattern) {
+                                    controls[h][i][l].store(h, i, j, controls[h][i][j].v);
+                                }
+                            }
+
+                            if(controls[h][i]) output(h, Number(i), j, controls[h][i][j].output(controls[h][i][j].v));
+                        }
+
+                        if(controls[h][i]) controls[h][i][j].draw(g);
+                    }
+                }
+            }
+		}
+	}
+	
+	g.refresh();
+}
+
+var redraw = function() {
+	g.all(0);
+	for(h in controls) {
+		for(i in controls[h]) {
+			for(j in controls[h][i]) {
+				if(controls[h][i][j].draw) controls[h][i][j].draw(g);
+				//output(h, i, j, controls[h][i][j].output(controls.tracks[i][j].v));
+			}
+		}
+	}
+}
+
+var refresh = function() {
+	g.all(0);
+	for(h in controls) {
+		for(i in controls[h]) {
+			for(j in controls[h][i]) {
+				if(controls[h][i][j].draw) controls[h][i][j].draw(g);
+				output(h, Number(i), j, controls[h][i][j].output(controls[h][i][j].v));
+			}
+		}
+	}
+}
