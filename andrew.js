@@ -8,6 +8,13 @@ function Control(v, p, b, pg) {
 	this.pg = pg;
 	this.event = function() {}
 	this.output = function(v) { return v }
+    this.get = function() {
+        return this.v;
+    }
+    this.set = function(input) {
+        this.v = input;
+        this.event(this.v)
+    }
 }
 
 Control.prototype.draw = function(g) {}
@@ -40,6 +47,11 @@ Toggle.prototype.look = function(x, y, z) {
 	}
 }
 
+Toggle.prototype.set = function(input) {
+    this.v = input;
+    this.event(this.v, null)
+}
+
 var Momentary = function(v, p, b, pg) {
 	Toggle.call(this, v, p, b, pg);
 }
@@ -57,7 +69,7 @@ Momentary.prototype.look = function(x, y, z) {
 		}
 	}
 }
-	
+
 var Value = function(v, p, b, pg) {
 	Control.call(this, v, p, b, pg);
 }
@@ -114,6 +126,11 @@ Value.prototype.look = function(x, y, z) {
 			}
 		}
 	}
+}
+
+Toggle.prototype.set = function(input) {
+    this.v = input;
+    this.event(this.v, null)
 }
 
 var Toggles = function(v, p, b, pg) {
@@ -206,6 +223,11 @@ Toggles.prototype.look = function(x, y, z) {
 	}
 }
 
+Toggles.prototype.set = function(input) {
+    this.v = input;
+    this.event(this.v, null, null, null)
+}
+
 var Momentaries = function(v, p, b, pg) {
 	Toggles.call(this, v, p, b, pg);
 }
@@ -272,6 +294,11 @@ Momentaries.prototype.look = function(x, y, z) {
 	}
 }
 
+Momentaries.prototype.set = function(input) {
+    this.v = input;
+    this.event(this.v, null, null, null)
+}
+
 var Fader = function(v, p, b, pg) {
 	Value.call(this, v, p, b, pg);
 	
@@ -333,6 +360,9 @@ Crossfader.prototype.draw = function(g) {
 }
 
 var Pattern = function(v, p, b, pg, f) {
+    //v, time, r, pattern
+    
+    
 	Toggle.call(this, v, p, b, pg);
 	
 	this.ispattern = 1;
@@ -354,27 +384,30 @@ var Pattern = function(v, p, b, pg, f) {
 	task.interval = 1;
 	
 	this.event = function(v, last) {
-		if(last == 2) {
+		if(last == 2) { //v=0 r=0
 			this.v = 0;
-			
-			time = 0;
+		}
+		else if(v == 0 && last == 1) { //v=2
+			this.v = 2;
+		}
+		
+        if(this.v == 0) {
+            time = 0;
 			r = 0;
 			pattern = {}
 			task.cancel();
-		}
-		else if(v == 0 && last == 1) {
-			this.v = 2;
-			
-			time = task.iterations;
+        }
+        else if(this.v == 2) {
+            time = task.iterations;
 			r = 0;
 			task.cancel();
 			task.repeat();
-		}
-		else if(v == 1 && last == 0) {
-			r = 1;
+        }
+        else if(this.v == 1) {
+            r = 1;
 			task.repeat();
-		}
-		
+        }
+        
 		this.draw(g);
 	}
 	
@@ -389,6 +422,18 @@ var Pattern = function(v, p, b, pg, f) {
 			pattern[task.iterations] = arguments;
 		}
 	}
+    
+    this.get = function() {
+        return { v: this.v, time: time, pattern: pattern }
+    }
+    
+    this.set = function(input) {
+        this.v = input.v;
+        time = input.time;
+        pattern = input.pattern;
+        
+        this.event(this.v, null);
+    }
 }
 
 Pattern.prototype = Object.create(Toggle.prototype);

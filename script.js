@@ -122,8 +122,6 @@ var Line = function(n) {
     this.menu.event = function(v, last) {
         if(me.presets[v]) {
             me.preset = me.presets[v];
-            
-            post("drawing");
         } else {
            
         }
