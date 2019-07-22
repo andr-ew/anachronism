@@ -29,7 +29,6 @@ var update = function(h, i, j, v) {
 }
 
 var update2 = function(h, i, j, k, v, index) {
-    post(controls[h][i][j].i, index);
     
     if(controls[h][i][j].i == index) {
         if (controls[h][i][j][k].v != v) {
@@ -163,7 +162,7 @@ var Line = function(n) {
     this.pat = new Pattern(0, [15, n], [0, LO, HI], function() { return page == n + 1; }, update);
     
     this.get = function() { 
-        ret = {
+        var ret = {
             menu: this.menu.get(),
             send: this.send.get(),
             pat: this.pat.get(),
@@ -171,7 +170,8 @@ var Line = function(n) {
         } 
         
         for(var i=0; i < this.presets.length; i++) {
-            ret.presets[i] = this.presets[i].get();
+            if(this.presets[i]) ret.presets[i] = this.presets[i].get();
+            else ret.presets[i] = null;
         }
         
         return ret;
