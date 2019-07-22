@@ -359,9 +359,8 @@ Crossfader.prototype.draw = function(g) {
 	}
 }
 
-var Pattern = function(v, p, b, pg, f) {
+var Pattern = function(v, p, b, pg, f, index) {
     //v, time, r, pattern
-    
     
 	Toggle.call(this, v, p, b, pg);
 	
@@ -376,7 +375,15 @@ var Pattern = function(v, p, b, pg, f) {
 		if(time > 0) {
 			for(t in pattern) {
 				if((arguments.callee.task.iterations % time) == t) {
-					f.apply(null, pattern[t]); //---------
+                    var args = []
+                    
+                    for(var i = 0; i < pattern[t].length; i++) {
+                        args[i] = pattern[t][i]
+                    }
+                    
+                    if(index != null) args[pattern[t].length] = index;
+                    
+					f.apply(null, args); //---------
 				}
 			}
 		}
@@ -398,7 +405,7 @@ var Pattern = function(v, p, b, pg, f) {
 			task.cancel();
         }
         else if(this.v == 2) {
-            time = task.iterations;
+            time == 0 ? time = task.iterations : time = time;
 			r = 0;
 			task.cancel();
 			task.repeat();
@@ -411,13 +418,7 @@ var Pattern = function(v, p, b, pg, f) {
 		this.draw(g);
 	}
 	
-	this.store = function(j, k, v) {
-		if(r) {
-			pattern[task.iterations] = arguments;
-		}
-	}
-    
-    this.store2 = function(j, k, k, i, v) {
+	this.store = function() {
 		if(r) {
 			pattern[task.iterations] = arguments;
 		}
