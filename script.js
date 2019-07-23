@@ -16,6 +16,10 @@ var locked = 0;
 
 var g = grid.connect();
 
+if (!Math.log2) Math.log2 = function(x) { //log2 polyfill
+  return Math.log(x) * Math.LOG2E;
+};
+
 var update = function(h, i, j, v) {
 	if (controls[h][i][j].v != v) {
 		controls[h][i][j].event(v);
@@ -103,19 +107,21 @@ var refresh = function() {
 
 var Preset = function(n, i) {
     var me = this;
-    //         0  1  2  3  4    5     6     7  8     9    10  11 12 13 14
-    //in max: -8 -4 -2 -1 -0.5 -0.25 -0.125 0. 0.125 0.25 0.5 1  2  4  8
-    var coarse_table = [
-        [ 9, 10, 11, 12, 13 ], //fwd
-        [ 5, 4, 3, 2, 1 ] //rev
-    ]
+    
+    
+//    //         0  1  2  3  4    5     6     7  8     9    10  11 12 13 14
+//    //in max: -8 -4 -2 -1 -0.5 -0.25 -0.125 0. 0.125 0.25 0.5 1  2  4  8
+//    var coarse_table = [
+//        [ 9, 10, 11, 12, 13 ], //fwd
+//        [ 5, 4, 3, 2, 1 ] //rev
+//    ]
     
     var loopsize = 0;
-    var maxsize = 480;
     var buffer = new Buffer("&&buf_" + n);
+    var initial_rec = false;
     
     var timer = new Task(function() {
-        loopsize = arguments.callee.task.iterations / 1000; //TODO: account for rate !!
+        loopsize += this.softcut.rate * this.softcut.rate_offset;
 	}, this);
 	timer.interval = 1;
     
@@ -124,69 +130,77 @@ var Preset = function(n, i) {
     this.r = new Toggle(0, [0, n], [0, HI], function() { return page == 0; });
     this.r.event = function(v) {
         if(v == 1 && me.m.get() == 0) { //start initial rec
+            initial_rec = true;
+            
             loopsize = 0;
-            me.ekphras.length = maxsize;
-            me.ekphras.pos = 0;
+            me.softcut.loop_end = buffer.length / 1000;
+            me.softcut.position = 0;
             buffer.send("clear");
             
             timer.repeat();
         }
-        else if(v == 0 && me.m.get() == 0) { //end initial rec
+        else if(v == 0 && initial_rec) { //end initial rec
+            initial_rec = false;
+            
             timer.cancel();
-            me.ekphras.length = loopsize;
+            me.softcut.loop_end = loopsize;
             
             me.m.set(1);
         }
         
-        me.ekphras.rec = v;
+        me.softcut.rec = v;
     }
 	this.m = new Toggle(0, [1, n], [0, HI], function() { return page == 0; });
     this.m.event = function(v) {
-        if(v == 1 && me.ekphras.loop_end == 0) { //end initial rec if that's going
+        if(v == 1 && initial_rec) { //end initial rec if that's going
+            initial_rec = false;
+            
             timer.cancel();
-            me.ekphras.length = loopsize;
+            me.softcut.loop_end = loopsize;
         }
         
-        me.ekphras.play = v;
+        me.softcut.play = v;
     }
 	this.rev = new Toggle(0, [2, n], [LO, HI], function() { return page == 0; });
     this.rev.event = function(v) {
         this.v = v
         
-        if( coarse_table[v] && coarse_table[v][me.s.get()]) me.ekphras.coarse = coarse_table[v][me.s.get()];
+        me.softcut.rate = (v ? -1 : 1) * Math.abs(me.softcut.rate);
     }
 	this.s = new Value(2, [[3, 4, 5, 6, 7], n], [[0, 0, LO, 0, 0], HI], function() { return page == 0; });
     this.s.event = function(v) {
-        this.v = v
+        this.v = v;
         
-        if(coarse_table[me.rev.get()][me.s.get()])
-           me.ekphras.coarse = coarse_table[me.rev.get()][me.s.get()];
+        me.softcut.rate = (me.rev.get() ? -1 : 1) * Math.pow(2, (v - 2));
     }
     this.buf = new Value(n % 4, [[8, 9, 10, 11], n], [[0, 0, 0, 0], HI], function() { return page == 0; });
     this.buf.event = function(v) {
         var num = (me.n >= 4) ? v + 4 : v;
         
-        me.ekphras.buffer = "&&buf_" + num;
+        me.softcut.buffer = "&&buf_" + num;
         var buffer = new Buffer("&&buf_" + num);
     }
     this.pat = new Pattern(0, [15, n], [0, LO, HI], function() { return page == 0; }, update2, i);
     
-    this.ekphras = { //TODO: go back to softcut-relevant vals
+    this.softcut = {
         rec: 0,
         play: 0,
-        rec_lvl: 1,
-        pre_lvl: 0.5,
-        coarse: coarse_table[me.rev.get()][me.s.get()],
-        fine: 0,
+        rate: 1,
+        rate_offset: 0,
+        rec_level: 1,
+        pre_level: 0.5,
+        voice_sync: "-",
         buffer: "&&buf_" + n % 4,
-        lvl_slew: 0,
-        rate_slew: 0,
-        fade: 0.032,
-        start: 0,
-        length: 0,
-        pos: "-",
+        level_slew_time: 0,
+        rate_slew_time: 0,
+        phase_quant: "-",
+        fade_time: 0.032,
+        loop_start: 0,
+        loop_end: 0,
+        loop: 1,
+        position: "-",
         pan: 0.5,
-        out_lvl: 1
+        level: 1
     }
     
     this.get = function() { return {
@@ -196,7 +210,7 @@ var Preset = function(n, i) {
         s: this.s.get(),
         buf: this.buf.get(),
         pat: this.pat.get(),
-        ekphras: this.ekphras
+        softcut: this.softcut
     }}
     
     this.set = function(input) {
@@ -206,29 +220,25 @@ var Preset = function(n, i) {
         this.s.set(input.s);
         this.buf.set(input.buf);        
         this.pat.set(input.pat);
-        this.ekphras = JSON.parse(JSON.stringify(input.ekphras));
+        this.softcut = JSON.parse(JSON.stringify(input.softcut));
     }
     
-    this.ekphras_get = function() { return this.ekphras; }
+    this.softcut_get = function() { return this.softcut; }
     
-    this.ekphras_set = function(input) {
+    this.softcut_set = function(input) {
         this.r.set(input.rec);
         this.m.set(input.play);    
-        
-        var is_neg = (input.coarse < 7) ? 1 : 0;
+//        
+        var is_neg = Number(input.rate < 0);
         this.rev.set(is_neg);
-        
-        this.s.set(-1);
-        for(var i = 0; i < coarse_table[is_neg].length; i++) {     
-            if (coarse_table[is_neg][i] == input.coarse) {
-                this.s.set(i);
-            }
-        }
-        
+//        
+        var absr = Math.abs(input.rate);
+        if(absr <= 4) this.s.set(Math.round(Math.log2(absr)) + 2);
+//        
         this.buf.set(input.buffer.split('_')[1] % 4);
         buffer = new Buffer(input.buffer);
         
-        this.ekphras = input;
+        this.softcut = input;
     }
 }
 
@@ -309,16 +319,16 @@ var get = function() {
 
 var diction_out = function() {
     var diction = {};
-    diction.ekphras = [];
+    diction.softcut = [];
     
     for(var i = 0; i < controls.lines.length; i++) {
-        diction.ekphras[i] = {}
+        diction.softcut[i] = {}
         
-        diction.ekphras[i].active = controls.lines[i].preset.i;
-        diction.ekphras[i].presets = [];
+        diction.softcut[i].active = controls.lines[i].preset.i;
+        diction.softcut[i].presets = [];
         
         for(var j = 0; j < controls.lines[i].presets.length; j++) {
-            diction.ekphras[i].presets[j] = controls.lines[i].presets[j].ekphras_get();
+            diction.softcut[i].presets[j] = controls.lines[i].presets[j].softcut_get();
         }
     }
     
@@ -326,14 +336,14 @@ var diction_out = function() {
 }
 
 var diction_in = function(stringified) {
-    var ekphras = JSON.parse(stringified).ekphras;
+    var softcut = JSON.parse(stringified).softcut;
     
     for(var i = 0; i < controls.lines.length; i++) {
         
-        controls.lines[i].preset_set(ekphras[i].active)
+        controls.lines[i].preset_set(softcut[i].active)
         
         for(var j = 0; j < controls.lines[i].presets.length; j++) {
-            controls.lines[i].presets[j].ekphras_set(ekphras[i].presets[j]);
+            controls.lines[i].presets[j].softcut_set(softcut[i].presets[j]);
         }
     }
     
