@@ -110,14 +110,31 @@ var Preset = function(n, i) {
         [ 5, 4, 3, 2, 1 ] //rev
     ]
     
+    var loopsize = 0;
+    var maxsize = 480;
+    var buffer = new Buffer("&&buf_" + n);
+    
+    var timer = new Task(function() {
+        loopsize = arguments.callee.task.iterations / 1000; //TODO: account for rate !!
+	}, this);
+	timer.interval = 1;
+    
     this.i = i;
     this.n = n;
     this.r = new Toggle(0, [0, n], [0, HI], function() { return page == 0; });
     this.r.event = function(v) {
         if(v == 1 && me.m.get() == 0) { //start initial rec
+            loopsize = 0;
+            me.ekphras.length = maxsize;
+            me.ekphras.pos = 0;
+            buffer.send("clear");
             
+            timer.repeat();
         }
         else if(v == 0 && me.m.get() == 0) { //end initial rec
+            timer.cancel();
+            me.ekphras.length = loopsize;
+            
             me.m.set(1);
         }
         
@@ -126,7 +143,8 @@ var Preset = function(n, i) {
 	this.m = new Toggle(0, [1, n], [0, HI], function() { return page == 0; });
     this.m.event = function(v) {
         if(v == 1 && me.ekphras.loop_end == 0) { //end initial rec if that's going
-           
+            timer.cancel();
+            me.ekphras.length = loopsize;
         }
         
         me.ekphras.play = v;
@@ -135,7 +153,7 @@ var Preset = function(n, i) {
     this.rev.event = function(v) {
         this.v = v
         
-        if(coarse_table[v] && coarse_table[v][me.s.get()]) me.ekphras.coarse = coarse_table[v][me.s.get()];
+        if( coarse_table[v] && coarse_table[v][me.s.get()]) me.ekphras.coarse = coarse_table[v][me.s.get()];
     }
 	this.s = new Value(2, [[3, 4, 5, 6, 7], n], [[0, 0, LO, 0, 0], HI], function() { return page == 0; });
     this.s.event = function(v) {
@@ -149,10 +167,11 @@ var Preset = function(n, i) {
         var num = (me.n >= 4) ? v + 4 : v;
         
         me.ekphras.buffer = "&&buf_" + num;
+        var buffer = new Buffer("&&buf_" + num);
     }
     this.pat = new Pattern(0, [15, n], [0, LO, HI], function() { return page == 0; }, update2, i);
     
-    this.ekphras = {
+    this.ekphras = { //TODO: go back to softcut-relevant vals
         rec: 0,
         play: 0,
         rec_lvl: 1,
@@ -165,6 +184,7 @@ var Preset = function(n, i) {
         fade: 0.032,
         start: 0,
         length: 0,
+        pos: "-",
         pan: 0.5,
         out_lvl: 1
     }
@@ -206,6 +226,7 @@ var Preset = function(n, i) {
         }
         
         this.buf.set(input.buffer.split('_')[1] % 4);
+        buffer = new Buffer(input.buffer);
         
         this.ekphras = input;
     }
@@ -285,36 +306,6 @@ var get = function() {
     
     return JSON.stringify(thing);
 }
-
-/*
-diction:
-    {
-        ekphras: [
-            {
-                active: 0,
-                presets: [
-                    {
-                        rec: 0,
-                        play: 0,
-                        rec_lvl: 1,
-                        pre_lvl: 0.5,
-                        coarse: 1,
-                        fine: 0,
-                        buffer: "&&buf_0",
-                        lvl_slew: 0,
-                        rate_slew: 0,
-                        fade: 0.032,
-                        start: 0,
-                        length: 0,
-                        pan: 0.5,
-                        out_lvl: 1
-                    }
-                ]
-            }
-        ]
-    }
-    
-*/
 
 var diction_out = function() {
     var diction = {};

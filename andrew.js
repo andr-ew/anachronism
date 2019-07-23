@@ -438,3 +438,33 @@ var Pattern = function(v, p, b, pg, f, index) {
 }
 
 Pattern.prototype = Object.create(Toggle.prototype);
+
+//var Recorder = function(v, p, b, pg) {
+//	Toggle.call(this, v, p, b, pg);
+//    
+//    this.v = [ v, 0 ];
+//    
+//    this.timer = function() {
+//        
+//    }
+//}
+//
+//Recorder.prototype = Object.create(Toggle.prototype);
+//
+//Recorder.prototype.look = function(x, y, z) {
+//	if(this.pg()) {
+//		if(x == this.p[0] && y == this.p[1]) {
+//			if(z == 0) {
+//                
+//				var last = this.v;
+//				this.v[0] = Math.abs(this.v[0] - 1)
+//                
+//                this.timer()
+//                
+//				this.event(this.v, last);
+//				
+//				return 1;
+//			}
+//		}
+//	}
+//}

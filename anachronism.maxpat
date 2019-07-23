@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "float", "bang" ],
+					"patching_rect" : [ 327.0, 93.0, 136.0, 22.0 ],
+					"text" : "buffer~ $$buf_0 480000"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-21",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
@@ -81,7 +93,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 146.546585083007812, 104.0, 107.0, 22.0 ],
+					"patching_rect" : [ 146.546585083007812, 93.0, 107.0, 22.0 ],
 					"text" : "prepend diction_in"
 				}
 
