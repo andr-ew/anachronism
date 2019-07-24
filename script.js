@@ -51,7 +51,7 @@ g.event = function(x, y, z) {
 		for(i in controls[h]) {
             if(controls[h][i]) {
                 for(j in controls[h][i]) {
-                    if(controls[h][i][j] && controls[h][i][j].look) {
+                    if(controls[h][i] && controls[h][i][j] && controls[h][i][j].look) {
                         if(controls[h][i][j].look(x, y, z)) {
                             for(l in controls[h][i]) {
                                 if(!(controls[h][i][j].ispattern) && controls[h][i][l].ispattern) {
@@ -62,17 +62,21 @@ g.event = function(x, y, z) {
 
                         if(controls[h][i][j].draw) controls[h][i][j].draw(g);
                     } else {
-                        for(k in controls[h][i][j]) {
-                            if(controls[h][i][j][k] && controls[h][i][j][k].look) {
-                                if(controls[h][i][j][k].look(x, y, z)) {
-                                    for(l in controls[h][i][j]) {
-                                        if(!(controls[h][i][j][k].ispattern) && controls[h][i][j][l].ispattern) {
-                                            controls[h][i][j][l].store(h, i, j, k, controls[h][i][j][k].v);
+                        if(controls[h][i]) {
+                            for(k in controls[h][i][j]) {
+                                if(controls[h][i] && controls[h][i][j][k] && controls[h][i][j][k].look) {
+                                    if(controls[h][i][j][k].look(x, y, z)) {
+                                        if(controls[h][i]) {
+                                            for(l in controls[h][i][j]) {
+                                                if(!(controls[h][i][j][k].ispattern) && controls[h][i][j][l].ispattern) {
+                                                    controls[h][i][j][l].store(h, i, j, k, controls[h][i][j][k].v);
+                                                }
+                                            }
                                         }
                                     }
-                                }
 
-                                if(controls[h][i][j][k].draw) controls[h][i][j][k].draw(g);
+                                    if(controls[h][i] && controls[h][i][j][k].draw) controls[h][i][j][k].draw(g);
+                                }
                             }
                         }
                     }
@@ -129,12 +133,23 @@ var Preset = function(n, i) {
     this.n = n;
     this.r = new Toggle(0, [0, n], [0, HI], function() { return page == 0; });
     this.r.event = function(v) {
+        me.softcut.rec = v;
+        
         if(v == 1 && me.m.get() == 0) { //start initial rec
             initial_rec = true;
             
             loopsize = 0;
             me.softcut.loop_end = buffer.length / 1000;
-            me.softcut.position = 0;
+            //me.softcut.position = 0;
+            
+            var line_num = me.n;
+            var active_num = me.i;
+            var bang = { softcut: [] }
+            bang.softcut[line_num] = { active: active_num, presets: [] }
+            bang.softcut[line_num].presets[active_num] = { position: 0 }
+            
+            diction_bang = bang;
+            
             buffer.send("clear");
             
             timer.repeat();
@@ -147,8 +162,6 @@ var Preset = function(n, i) {
             
             me.m.set(1);
         }
-        
-        me.softcut.rec = v;
     }
 	this.m = new Toggle(0, [1, n], [0, HI], function() { return page == 0; });
     this.m.event = function(v) {
@@ -205,7 +218,6 @@ var Preset = function(n, i) {
         loop_start: 0,
         loop_end: 0,
         loop: 1,
-        position: "-",
         pan: 0.5,
         level: 1
     }
@@ -339,8 +351,16 @@ var diction_out = function() {
         }
     }
     
-    output(JSON.stringify(diction));
+    output("diction_out", JSON.stringify(diction));
+    
+    if(diction_bang) {
+        output("diction_bang", JSON.stringify(diction_bang));
+        
+        diction_bang = null;
+    }
 }
+
+var diction_bang = null;
 
 var diction_in = function(stringified) {
     var softcut = JSON.parse(stringified).softcut;
