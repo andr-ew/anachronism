@@ -168,17 +168,15 @@ var Preset = function(n, i) {
         me.softcut.rate = (v ? -1 : 1) * Math.abs(me.softcut.rate);
     }
     this.s = new Glide(2, [[3, 4, 5, 6, 7], n], [[0, 0, LO, 0, 0], HI], function() { return page == 0; });
-    this.s.event = function(transform) {
-        //post(v.origin, v.dest, v.time );
+    this.s.event = function(trans) {
+        if(trans.time != null) me.softcut.rate_slew_time = trans.time;
+        me.softcut.rate = (me.rev.get() ? -1 : 1) * Math.pow(2, (trans.dest - 2));
         
-        me.softcut.rate_slew_time = transform.time;
-        me.softcut.rate = (me.rev.get() ? -1 : 1) * Math.pow(2, (transform.dest - 2));
-        
-        if(transform.time != 0) {
+        if(trans.time) {
             var delay = new Task(function() { this.softcut.rate_slew_time = 0; 
                                              diction_out();
                                             }, me);
-            delay.schedule((transform.time + 0.01) * 1000);
+            delay.schedule((trans.time + 0.01) * 1000);
         }
     }
     

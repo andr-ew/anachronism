@@ -527,8 +527,9 @@ Glide.prototype.look = function(x, y, z) {
                             if(this.transform.dest != null && i == this.transform.dest) { //end of glide
                                 this.event({
                                     origin: this.transform.origin,
-                                    dest: this.transform.dest,
-                                    time: this.transform.time
+                                    dest: this.transform.dest
+//                                    ,
+//                                    time: this.transform.time
                                 });
                                 
                                 this.transform.time = 0;
@@ -540,12 +541,13 @@ Glide.prototype.look = function(x, y, z) {
                                 if(this.transform.dest != null) { //end of glide
                                     this.v = [this.transform.dest]; 
                                     
+                                    var t = this.transform.time
                                     this.event({
                                         origin: this.transform.origin,
                                         dest: this.transform.dest,
-                                        time: this.transform.time
+                                        time: t
                                     });
-                                    
+                                    post("hi");
                                     this.transform.time = 0;
                                 } else { //no glide
                                     this.event({
@@ -555,6 +557,7 @@ Glide.prototype.look = function(x, y, z) {
                                     });
                                     
                                     this.transform.time = 0;
+                                    
                                 }
                                 
                                 
@@ -566,8 +569,7 @@ Glide.prototype.look = function(x, y, z) {
                                 
                                 this.event({
                                         origin: this.transform.origin,
-                                        dest: this.transform.origin,
-                                        time: 0
+                                        dest: this.transform.origin
                                     });
                                 
                                 this.transform.time = 0;
