@@ -484,9 +484,9 @@ var Glide = function(v, p, b, pg) {
 	this.timer.interval = 1;
     
     this.set = function(input) {
-        if(this.transform.time == 0) {
+        if(this.transform.dest == null) {
             this.v = [input];
-            this.event({ origin: input, dest: input, time: 0 });
+            this.event({ origin: input, dest: input });
         }
     }
 
@@ -527,12 +527,11 @@ Glide.prototype.look = function(x, y, z) {
                             if(this.transform.dest != null && i == this.transform.dest) { //end of glide
                                 this.event({
                                     origin: this.transform.origin,
-                                    dest: this.transform.dest
-//                                    ,
-//                                    time: this.transform.time
+                                    dest: this.transform.dest,
+                                    time: this.transform.time
                                 });
                                 
-                                this.transform.time = 0;
+                                //this.transform.time = 0;
                                 this.v = [this.transform.dest];
                                 
                                 this.timer.cancel();
@@ -547,8 +546,8 @@ Glide.prototype.look = function(x, y, z) {
                                         dest: this.transform.dest,
                                         time: t
                                     });
-                                    post("hi");
-                                    this.transform.time = 0;
+                                    
+                                    //this.transform.time = 0;
                                 } else { //no glide
                                     this.event({
                                         origin: this.transform.origin,

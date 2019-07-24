@@ -39,6 +39,19 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-8",
+					"linecount" : 32,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 46.046585083007812, 329.0, 434.0, 437.0 ],
+					"text" : "{\\\"softcut\\\":[{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_0\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_1\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_2\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_3\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_0\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_1\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_2\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_3\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}]}"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -56,21 +69,8 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 461.04656982421875, 221.0, 67.0, 22.0 ],
+					"patching_rect" : [ 458.04656982421875, 283.0, 67.0, 22.0 ],
 					"text" : "r &&diction"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-17",
-					"linecount" : 32,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 46.046585083007812, 277.0, 434.0, 437.0 ],
-					"text" : "{\\\"softcut\\\":[{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":2\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_0\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_1\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_2\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_3\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_0\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_1\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_2\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_3\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}]}"
 				}
 
 			}
@@ -177,7 +177,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-17", 1 ],
+					"destination" : [ "obj-8", 1 ],
 					"source" : [ "obj-21", 0 ]
 				}
 
