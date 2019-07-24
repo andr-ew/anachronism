@@ -468,3 +468,120 @@ Pattern.prototype = Object.create(Toggle.prototype);
 //		}
 //	}
 //}
+
+
+var Glide = function(v, p, b, pg) {
+    v = [v];
+    
+	Toggles.call(this, v, p, b, pg);
+    
+    // { origin: i, dest: i, time: t }
+    this.transform = {};
+    
+    this.timer = new Task(function() {
+        this.transform.time = arguments.callee.task.iterations / 1000;
+	}, this);
+	this.timer.interval = 1;
+    
+    this.set = function(input) {
+        if(this.transform.time == 0) {
+            this.v = [input];
+            this.event({ origin: input, dest: input, time: 0 });
+        }
+    }
+
+    this.get = function() {
+        return this.v[0];
+    }
+}
+
+Glide.prototype = Object.create(Toggles.prototype);
+
+
+
+Glide.prototype.look = function(x, y, z) {
+	if(this.pg()) {
+		if(this.p[0].length) {
+			if(y == this.p[1]) {
+				for(var i = 0; i < this.p[0].length; i++) {
+					if(this.p[0][i] == x) {
+						if(z == 1) {
+                            
+                            if(this.transform.origin == null) {
+                                this.transform = {}
+                                this.transform.origin = i;
+                                
+                                this.timer.repeat();
+                                this.v = [i];
+                            } else if(this.transform.origin != null) {
+                                
+                                this.transform.dest = i;
+                                this.v = [this.transform.origin, i];
+                                
+                                //this.v.sort(function(a, b) { return a - b; });
+                            } else {
+                                //this.v = [i];
+                            }
+						}                        
+						else {
+                            if(this.transform.dest != null && i == this.transform.dest) { //end of glide
+                                this.event({
+                                    origin: this.transform.origin,
+                                    dest: this.transform.dest,
+                                    time: this.transform.time
+                                });
+                                
+                                this.transform.time = 0;
+                                this.v = [this.transform.dest];
+                                
+                                this.timer.cancel();
+                            } else if(this.transform.origin != null && i == this.transform.origin) {          
+                               
+                                if(this.transform.dest != null) { //end of glide
+                                    this.v = [this.transform.dest]; 
+                                    
+                                    this.event({
+                                        origin: this.transform.origin,
+                                        dest: this.transform.dest,
+                                        time: this.transform.time
+                                    });
+                                    
+                                    this.transform.time = 0;
+                                } else { //no glide
+                                    this.event({
+                                        origin: this.transform.origin,
+                                        dest: this.transform.origin,
+                                        time: 0
+                                    });
+                                    
+                                    this.transform.time = 0;
+                                }
+                                
+                                
+                                this.transform.origin = null;
+                                this.timer.cancel();
+                            } else if(this.transform.dest == null && this.transform.origin == null) { //remote set
+                                this.v = [i];
+                                this.timer.cancel();
+                                
+                                this.event({
+                                        origin: this.transform.origin,
+                                        dest: this.transform.origin,
+                                        time: 0
+                                    });
+                                
+                                this.transform.time = 0;
+                            } else { //no output
+                                
+                            }
+						}
+                        
+						return 1;
+					}
+				}
+			}
+		}
+		else { //TODO
+		}
+	}
+}

@@ -167,12 +167,21 @@ var Preset = function(n, i) {
         
         me.softcut.rate = (v ? -1 : 1) * Math.abs(me.softcut.rate);
     }
-	this.s = new Value(2, [[3, 4, 5, 6, 7], n], [[0, 0, LO, 0, 0], HI], function() { return page == 0; });
-    this.s.event = function(v) {
-        this.v = v;
+    this.s = new Glide(2, [[3, 4, 5, 6, 7], n], [[0, 0, LO, 0, 0], HI], function() { return page == 0; });
+    this.s.event = function(transform) {
+        //post(v.origin, v.dest, v.time );
         
-        me.softcut.rate = (me.rev.get() ? -1 : 1) * Math.pow(2, (v - 2));
+        me.softcut.rate_slew_time = transform.time;
+        me.softcut.rate = (me.rev.get() ? -1 : 1) * Math.pow(2, (transform.dest - 2));
+        
+        if(transform.time != 0) {
+            var delay = new Task(function() { this.softcut.rate_slew_time = 0; 
+                                             diction_out();
+                                            }, me);
+            delay.schedule((transform.time + 0.01) * 1000);
+        }
     }
+    
     this.buf = new Value(n % 4, [[8, 9, 10, 11], n], [[0, 0, 0, 0], HI], function() { return page == 0; });
     this.buf.event = function(v) {
         var num = (me.n >= 4) ? v + 4 : v;
@@ -228,13 +237,13 @@ var Preset = function(n, i) {
     this.softcut_set = function(input) {
         this.r.set(input.rec);
         this.m.set(input.play);    
-//        
+      
         var is_neg = Number(input.rate < 0);
         this.rev.set(is_neg);
-//        
+        
         var absr = Math.abs(input.rate);
         if(absr <= 4) this.s.set(Math.round(Math.log2(absr)) + 2);
-//        
+        
         this.buf.set(input.buffer.split('_')[1] % 4);
         buffer = new Buffer(input.buffer);
         

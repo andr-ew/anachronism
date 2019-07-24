@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 467.0, 79.0, 677.0, 742.0 ],
+		"rect" : [ 403.0, 79.0, 787.0, 742.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,17 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 541.0, 316.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -56,7 +67,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 488.04656982421875, 221.0, 67.0, 22.0 ],
+					"patching_rect" : [ 461.04656982421875, 221.0, 67.0, 22.0 ],
 					"text" : "r &&diction"
 				}
 
@@ -69,7 +80,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 73.046585083007812, 297.0, 433.95343017578125, 437.0 ],
+					"patching_rect" : [ 53.04656982421875, 274.0, 433.95343017578125, 437.0 ],
 					"text" : "{\\\"softcut\\\":[{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_0\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_1\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_2\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_3\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_0\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_1\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_2\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}\\,{\\\"active\\\":0\\,\\\"presets\\\":[{\\\"rec\\\":0\\,\\\"play\\\":0\\,\\\"rate\\\":1\\,\\\"rate_offset\\\":0\\,\\\"rec_level\\\":1\\,\\\"pre_level\\\":0.5\\,\\\"voice_sync\\\":\\\"-\\\"\\,\\\"buffer\\\":\\\"&&buf_3\\\"\\,\\\"level_slew_time\\\":0\\,\\\"rate_slew_time\\\":0\\,\\\"phase_quant\\\":\\\"-\\\"\\,\\\"fade_time\\\":0.032\\,\\\"loop_start\\\":0\\,\\\"loop_end\\\":0\\,\\\"loop\\\":1\\,\\\"position\\\":\\\"-\\\"\\,\\\"pan\\\":0.5\\,\\\"level\\\":1}]}]}"
 				}
 
@@ -93,7 +104,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 146.546585083007812, 93.0, 107.0, 22.0 ],
+					"patching_rect" : [ 146.546585083007812, 113.0, 107.0, 22.0 ],
 					"text" : "prepend diction_in"
 				}
 
@@ -163,21 +174,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-12", 0 ],
-					"source" : [ "obj-15", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-7", 0 ],
-					"source" : [ "obj-2", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-17", 1 ],
+					"destination" : [ "obj-4", 1 ],
 					"source" : [ "obj-21", 0 ]
 				}
 
