@@ -325,6 +325,8 @@ Grid.prototype.mute = function(i) {
 	}
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
 function Control(v, p, b, pg) {
 	this.v = v;
 	this.p = p;
@@ -825,8 +827,12 @@ var Glide = function(v, p, b, pg) {
     
     this.set = function(input) {
         if(this.v.transform.dest == null) {
-            this.v.draw = [input];
-            this.event({ origin: input, dest: input });
+            this.v = {
+                draw: [input],
+                transform: {}
+            }
+            
+            this.event(this.v);
         }
     }
 
@@ -932,6 +938,9 @@ Glide.prototype.draw = function(g) {
 		}
 	}
 }
+
+
+//------------------------------------------------------------------------------------------------------------------------
 
 var controls = {}
 
@@ -1044,6 +1053,17 @@ var refresh = function() {
 	
 }
 
+//------------------------------------------------------------------------------------------------------------------------
+
+
+var buffdate = function() {
+    for(var i = 0; i < controls.lines.length; i++) {
+        for(var j = 0; j < controls.lines[i].presets.length; j++) {
+            controls.lines[i].presets[j].buf.event(controls.lines[i].presets[j].buf.v);
+        }
+    }
+}
+
 var Preset = function(n, i) {
     var me = this;
     
@@ -1092,6 +1112,8 @@ var Preset = function(n, i) {
             timer.repeat();
             
             me.softcut.play = 1;
+            
+            buffdate();
         }
         else if(v == 0 && initial_rec) { //end initial rec
             initial_rec = false;
@@ -1100,6 +1122,8 @@ var Preset = function(n, i) {
 
             me.softcut.loop_end = loopsize;
             me.m.set(1);
+            
+            buffdate();
         }
     }
 	this.m = new Toggle(0, [1, n], [0, HI], function() { return page == 0; });
@@ -1203,8 +1227,8 @@ var Preset = function(n, i) {
     
     this.softcut_set = function(input) {
         this.r.set(input.rec);
-        this.m.set(input.play == 1 && input.rec == 0);    
-      
+        this.m.set(Number(input.play == 1 && input.rec == 0));    
+//      
         var is_neg = Number(input.rate < 0);
         this.rev.set(is_neg);
         
@@ -1324,11 +1348,13 @@ var diction_in = function(stringified) {
     
     for(var i = 0; i < controls.lines.length; i++) {
         
-        controls.lines[i].preset_set(softcut[i].active)
+        controls.lines[i].preset_set(softcut[i].active);
         
         for(var j = 0; j < controls.lines[i].presets.length; j++) {
             controls.lines[i].presets[j].softcut_set(softcut[i].presets[j]);
         }
+        
+         //controls.lines[i].preset.softcut_set(softcut[i].presets[softcut[i].active]);
     }
     
     redraw();
