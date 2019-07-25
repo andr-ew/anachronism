@@ -1,6 +1,6 @@
 # anachronsim
 
-8 voice x 8 minute digital tape looping interface for grids + max for live
+8 voice x 8 minute digital tape looping interface for grids + max for live. speaks to other devices in `prosidy` through `diction`.
 
 ![pic](grid.jpg)
 
