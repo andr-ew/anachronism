@@ -1,16 +1,10 @@
-# anaphora
+# anachronsim
 
-playable varispeed delay/looper in max for live. a variation on mlr for grids. rough around the edges.
+8 voice x 8 minute digital tape looping interface for grids + max for live
 
-![pic](anaphora_pic.png)
+![pic](grid.jpg)
 
-a sort-of-polished-up version of of a [norns mlr](https://llllllll.co/t/mlr-norns/21145/175)-inspired delay/looper. excels at expressive glitchy improv stuff.
-
-differences from norns mlr include:
-
-* a simplified 1-page / 4-buffer layout. lets you cut, repitch, record and switch buffers simultaneously, all of which can be pattern recorded.
-* unlike `softcut`, the audio engine is home-brewed in max and has a lot of glitchy/rough edges, including buffer clicks & varispeed record/playback resampling artifacts. [think early-2000's microsound.](https://shop.christopherwillits.com/album/folding-and-the-tea) this is all semi-intentional and I'm not looking to alter the behavior for this app.
-* alternate record speed / play speed / overdub architecture. at overdub(fb) = 0, record speed is locked at 1, speed controls playback. at overdub > 0, playback speed is locked at 1, speed controls record. honesty, no idea why I chose this behavior, but it can be fun.
+![ss](ss.png)
 
 ### Requirements
 
@@ -20,18 +14,24 @@ differences from norns mlr include:
 
 [128 or 64 grid](https://monome.org/)
 
-![docs](anaphora_docs.png)
+![docs](docs.png)
 
 ### first steps
 
-1.  open a live set, drop anaphora.amxd in an audio track and record enanable the track.
+1.  open a live set, drop anachronsim.amxd in an audio track and record enanable the track.
 
-2.  select your 128 grid from the dropdown on anaphora. make sure 'focus' is enabled
+2.  select your 128 grid from the dropdown on anaphora
 
-3.  press the top left key on the grid to create a loop. make a sound. press the top left key again to stop the loop. you can also drag and drop existing audio into one of the waveform displays.
+3.  press the top left key on the grid to create a loop. make a sound. press the top left key again to end recording.
 
-4. recording while a channel is muted results in a new loop.
+4. recording while a channel is not playing results in a new loop.
 
-explore ~
+5. speed controls both record and and play rate. hold two keys and release to glide - this is very expressive (!)
 
-[download](https://github.com/AndrewShike/anaphora/archive/master.zip)
+6. the next 4 keys select which buffer a voice reads/writes (either 1-4 or 5-8) (there are 8 buffers). using seprate voices to record to and pay back from buffer yields more options.
+
+7. pattern record captures key presses on the grid. cyle through record > (press some other buttons) > playback > reset
+
+8. on the standalone .amxd there are options for dry signal + voice levels, voice-wide overdub (for exporing delays), and voice-wide panning (width).
+
+[download](https://github.com/AndrewShike/anaphora/anachronsim/master.zip)
