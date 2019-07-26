@@ -30,8 +30,10 @@
 
 6. the next 4 keys select which buffer a voice reads/writes (either 1-4 or 5-8) (there are 8 buffers). using seprate voices to record to and pay back from buffer yields more options.
 
-7. pattern record captures key presses on the grid. cyle through record > (press some other buttons) > playback > reset
+7. the location keys can be used to send a loop to one of two `metonymy`instances, for further routing and re-routing options.
 
-8. on the standalone .amxd there are options for dry signal + voice levels, voice-wide overdub (for exporing delays), and voice-wide panning (width).
+8. pattern record captures key presses on the grid. cyle through record > (press some other buttons) > playback > reset
+
+9. on the standalone .amxd there are options for dry signal + voice levels, voice-wide overdub (for exporing delays), and voice-wide panning (width).
 
 [download](https://github.com/AndrewShike/anaphora/anachronsim/master.zip)
